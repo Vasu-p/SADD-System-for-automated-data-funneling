@@ -1,0 +1,260 @@
+<style>
+  .ajax-loader {
+  visibility: hidden;
+  background-color: rgba(255,255,255,0.7);
+  position: absolute;
+  z-index: +100;
+  top: 0;bottom: 0;left: 0;right: 0;
+}
+
+.ajax-loader img {
+  position: relative;
+  top:50%;
+  left:50%;
+}
+.table {
+  table-layout:fixed;
+}
+.table thead th {
+    
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+</style>
+
+<div class="ajax-loader">
+  <img src="bower_components/hourglass.gif" class="img-responsive" />
+</div>
+
+
+<div class="page-header">
+  <h2>{{request.URL}}</h2>
+</div>
+
+<!-- Add Mapping Button =========== Start  -->
+
+<div class="row" ng-show="!showAdd"> 
+  <div class="form-group">
+    
+    <div class="col-lg-4 col-lg-offset-4">
+     <button class="btn btn-primary" ng-click="showAdd = true" style="width:100%">Add Mapping</button>
+    </div>    
+  </div> 
+</div>
+
+<!-- Add Mapping Button  =========== End  -->
+
+<!-- Add Mapping =========== Start  -->
+<div class="row" ng-show="showAdd"> 
+  <div class="col-lg-1 col-lg-offset-11">
+     <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="showAdd = false"><span aria-hidden="true">&times;</span></button>
+   </div>
+</div>
+
+<div class="well" ng-show="showAdd" style="margin-top:10px"> 
+
+  <div class="row">  
+    <div class="col-lg-6 col-lg-offset-3"> <!-- for the server name option -->
+      <div class="form-group has-feedback" id="serverfield">
+          <input type="text" class="form-control" ng-model="server" placeholder="Server Name" ng-blur="fetchDBs()" aria-describedby="successStatus">
+          <span class="glyphicon form-control-feedback" aria-hidden="true" id="successSymbol"></span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6"> <!-- for username and password -->
+      <div class="form-group">
+        <input type="text" class="form-control" ng-model="username" placeholder="Username">
+      </div>
+    </div>
+    <div class="col-lg-6"> <!-- for username and password -->
+      <div class="form-group">
+        <input type="password" class="form-control" ng-model="password" placeholder="Password">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" ng-show="showAdd">
+  <div class="col-lg-6">
+    <div class="form-group">
+      <select class="form-control" ng-model="database" ng-options="db for db in db_list" ng-blur="fetchTables()" ng-disabled="dbDisable">
+      </select>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="form-group">
+      <select class="form-control" ng-model="table" ng-options="table for table in table_list" ng-blur="fetchColumns()" ng-disabled="tableDisable">
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="well" ng-show="showAdd && showTable">
+  <div ng-repeat="i in range(tableRows) track by $index" ng-init="rowIndex = $index">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th ng-repeat="col in getColsRange(rowIndex) track by $index" class="col-lg-3">{{col}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td ng-repeat="col in getColsRange(rowIndex) track by $index" class="col-lg-3"><select class="form-control" ng-model="answers[rowIndex*4 + $index]" ng-options="attr.AttributeId as attr.AttributeName for attr in attributes"><select></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row" ng-show="showAdd">
+  <div class="col-lg-4 col-lg-offset-4">
+    <button class="btn btn-primary" ng-click="addMapping()" style="width:100%">Submit</button>
+  </div>
+</div>
+
+  <!-- <div class="col-lg-6">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <input type="text" class="form-control" ng-model="username" placeholder="Username">
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <input type="password" class="form-control" ng-model="password" placeholder="Password">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+         
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <select class="form-control" ng-model="database" ng-options="db for db in db_list" ng-blur="fetchTables()" ng-disabled="dbDisable">
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <select class="form-control" ng-model="table" ng-options="table for table in table_list" ng-blur="fetchColumns()" ng-disabled="tableDisable">
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <select class="form-control" ng-model="column" ng-options="col for col in col_list" ng-disabled="colDisable">
+          </select>
+        </div>
+      </div>
+    </div>
+  </div> 
+</div> -->
+
+
+<!-- Add Request  =========== End  -->
+
+<hr>
+
+<!-- Filter options ========= Start -->
+
+<div class="row">
+  <div class="col-lg-4">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Server</label>
+      <select class="form-control" ng-model="filterVal.ExecServerName" ng-options="ser for ser in getFilterServer()" ng-blur="refreshDb()">
+      </select>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Database</label>
+      <select class="form-control" ng-model="filterVal.ExecDbName" ng-options="db for db in getFilterDb()" ng-blur="refreshTable()">
+      </select>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Table</label>
+      <select class="form-control" ng-model="filterVal.ExecObjName" ng-options="tab for tab in getFilterTable()">
+      </select>
+    </div>
+  </div>
+</div>
+
+
+<!-- Filter options ========= End -->
+<hr>
+
+<!-- List of Mappings  =========== Start  -->
+
+<!-- <input type="text" ng-model="filterVal.ExecDbName"> -->
+
+<div class="list-group" ng-show="successMapping && mappings.length > 0" style="margin-top:40px"> 
+
+
+
+
+  
+  <div class="list-group-item" ng-repeat="mapping in mappings | filter:filterVal track by mapping.MappingId">
+  	  <a role="button">{{mapping.ExecObjName}} ==> {{mapping.ColumnName}}</a>
+      <div class="pull-right">
+        
+        <a role="button" ng-click="getInfoMapping(mapping.MappingId)" style="padding:5px">
+          <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+        </a>
+        <a role="button" ng-click="deleteMapping(mapping.MappingId)" style="padding:5px">
+          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </a>
+      </div>
+	  
+  </div>
+
+
+
+
+</div>
+
+
+<div ng-show="successMapping && mappings.length == 0" class="jumbotron" style="margin-top:40px">
+  No Mapping present !!!
+</div>
+
+<div ng-show="!successMapping" class="jumbotron" style="margin-top:40px">
+  Opps!! Some Error Occured. Message : {{errorMessage}}
+</div>
+
+<!-- List of Mappings  =========== End  -->
+
+
+
+<!-- Mapping info modal  =========================================== Start  -->
+
+<div class="modal fade" tabindex="-1" role="dialog" ng-repeat="mapping in mappings track by mapping.MappingId" id="modal{{mapping.MappingId}}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!-- <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{mapping.MappingId}}</h4>
+      </div> -->
+      <div class="modal-body" id="modalbody{{mapping.MappingId}}">
+        
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Mapping info modal  =========================================== End  -->
+
+

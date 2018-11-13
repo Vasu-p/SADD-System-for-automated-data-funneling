@@ -1,0 +1,245 @@
+<style>
+  .ajax-loader {
+  visibility: hidden;
+  background-color: rgba(255,255,255,0.7);
+  position: absolute;
+  z-index: +100;
+  top: 0;bottom: 0;left: 0;right: 0;
+}
+
+.ajax-loader img {
+  position: relative;
+  top:50%;
+  left:50%;
+}
+</style>
+
+<div class="ajax-loader">
+  <img src="bower_components/hourglass.gif" class="img-responsive" />
+</div>
+
+
+<div class="page-header">
+  <h2>API Requests of {{ProjectName}} Project</h2>
+</div>
+
+<!-- Add Request Button =========== Start  -->
+
+<div class="row" ng-show="!showAdd"> 
+  <div class="form-group">
+    
+    <div class="col-lg-4 col-lg-offset-4">
+     <button class="btn btn-primary" ng-click="showAdd = true" style="width:100%">Add API Request</button>
+    </div>    
+  </div> 
+</div>
+
+<!-- Add Request Button  =========== End  -->
+
+<!-- Add Request =========== Start  -->
+<div class="row" ng-show="showAdd"> 
+  <div class="col-lg-1 col-lg-offset-11">
+     <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="showAdd = false"><span aria-hidden="true">&times;</span></button>
+   </div>
+</div>
+
+<div class="row" ng-show="showAdd"> 
+  <!-- <hr> -->
+
+  <div class="col-lg-8">
+    <h5 class="col-lg-4 col-lg-offset-4">General</h5>
+    <div class="row">
+      <div class="col-lg-8">
+        <label for="">URL</label>
+        <div class="form-group has-feedback" id="urlfield">
+          <div class="input-group">
+            <span class="input-group-addon">http://</span>
+            <input type="text" class="form-control" ng-model="url" placeholder="URL" ng-blur="checkURL()" aria-describedby="successStatus">
+          </div>
+          <span class="glyphicon form-control-feedback" aria-hidden="true" id="successSymbol"></span>
+          <!-- <span id="successStatus" class="sr-only"></span> -->
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <label for="">Req. Type</label>
+        <div class="form-group">    
+          <select class="form-control" ng-model="requestType"> 
+
+            <option>PUSH</option>
+            <option>PULL</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-8">
+        <label for="">Description</label>
+        <div class="form-group">    
+          <input type="text" class="form-control" ng-model="description" placeholder="Description">
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <label for="">Resp. Type</label>
+        <div class="form-group">
+          <select class="form-control" ng-model="responseType">
+            <option>JSON</option>
+            <option>XML</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-4">
+        <label for="">Frequency</label>
+        <div class="form-group">
+          <select class="form-control" ng-model="frequency" ng-options="freq.SubFrequencyDesc for freq in frequencies">
+              
+          </select>    
+          
+        </div>
+      </div>   
+      <div>
+        <h6 class="text-primary" ng-show="frequency">{{frequency.TimeInterval}} {{frequency.Unit}}</h6>
+      </div>  
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <label for="">Start DateTime</label>
+        <div class="form-group">    
+          <div class='input-group date' id='datetimepicker1'>
+              <!-- <label for="startFrom">Start From</label> -->
+              <input type='text' class="form-control" placeholder="Start From"/>
+              <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label for="">End DateTime</label>
+        <div class="form-group">    
+          <div class='input-group date' id='datetimepicker2'>
+              <input type='text' class="form-control" placeholder="Upto"/>
+              <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6 col-lg-offset-3">
+        <button class="btn btn-primary" ng-click="addRequest()" style="width:100%">Submit</button>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="col-lg-4">
+    <div class="row">
+      <h5 class="col-lg-4 col-lg-offset-4">Arguments</h5>
+    </div>
+
+    <div class="row" ng-repeat="arg in args">
+      <div class="col-lg-6">
+        <div class="form-group">
+         
+          <input type="text" class="form-control" ng-model="arg.key" placeholder="Key">
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+         
+          <input type="text" class="form-control" ng-model="arg.value" placeholder="Value">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2">
+        <button class="btn btn-primary" ng-click="addArg()" style="width:100%">Add Argument</button>
+      </div>
+    </div>
+    
+    
+    
+  </div>
+
+</div>
+
+<!-- Add Request  =========== End  -->
+
+<hr>
+
+<!-- List of Requests  =========== Start  -->
+
+<div class="list-group" ng-show="successRequest && requests.length > 0" style="margin-top:40px"> 
+  
+  <div class="list-group-item" ng-repeat="request in requests track by request.RequestId">
+  	  <a role="button" ng-click="gotoMapping(request)">{{request.URL}}</a>
+
+	  <div class="pull-right">
+    <span class="label label-success" style="font-size:15px">{{request.Frequency}}</span>  
+    <span class="label label-info" style="font-size:15px">{{request.RequestType}}</span>
+	  <a role="button" ng-click="getInfoRequest(request.RequestId)" style="padding:5px">
+	    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+	  </a>
+	  <a role="button" ng-click="deleteRequest(request.RequestId)" style="padding:5px">
+	    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+	  </a>
+	  </div>
+
+  </div>
+  
+</div>
+
+
+<div ng-show="successRequest && requests.length == 0" class="jumbotron" style="margin-top:40px">
+  No API Requests under this Project! 
+</div>
+
+<div ng-show="!successRequest" class="jumbotron" style="margin-top:40px">
+  Opps!! Some Error Occured. Message : {{errorMessage}}
+</div>
+
+<!-- List of Projects  =========== End  -->
+
+
+
+<!-- Request info modal  =========================================== Start  -->
+
+<div class="modal fade" tabindex="-1" role="dialog" ng-repeat="request in requests track by request.RequestId" id="modal{{request.RequestId}}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{request.URL}}</h4>
+      </div>
+      <div class="modal-body" id="modalbody{{request.RequestId}}">
+        
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Request info modal  =========================================== End  -->
+
+<script>
+  $(function () {
+      $('#datetimepicker1').datetimepicker();
+      $('#datetimepicker2').datetimepicker();
+
+      
+
+  });
+</script>

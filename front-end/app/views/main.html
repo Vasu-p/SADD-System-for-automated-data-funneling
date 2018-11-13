@@ -1,0 +1,180 @@
+
+<style>
+  .ajax-loader {
+  visibility: hidden;
+  background-color: rgba(255,255,255,0.7);
+  position: absolute;
+  z-index: +100;
+  top: 0;bottom: 0;left: 0;right: 0;
+}
+
+.ajax-loader img {
+  position: relative;
+  top:50%;
+  left:50%;
+}
+</style>
+
+<div class="ajax-loader">
+  <img src="bower_components/hourglass.gif" class="img-responsive" />
+</div>
+
+<div class="page-header">
+  <h1>Departments and Sub Departments</h1>
+</div>
+
+<!-- Add Department  =========== Start  -->
+
+<div class="row"> 
+  <div class="form-group">
+    <div class="col-lg-8">
+      
+      <input type="text" class="form-control" id="deptName" placeholder="Department's name" ng-model="deptName">
+    </div>
+    <div class="col-lg-2">
+
+     <button class="btn btn-primary" ng-click="addDepartment()">Add</button>
+    </div>    
+  </div> 
+</div>
+
+<!-- Add Department  =========== End  -->
+
+<!-- Add Sub Department  =========== Start  -->
+<label for="" style="margin-top:20px">Parent Dept Name</label>
+<div class="row"> 
+  <div class="form-group">
+    <div class="col-lg-4">
+      
+      <select class="form-control" ng-model="subDeptParentDept">
+        <option ng-repeat="dept in departments">{{dept.DeptName}}</option>
+      </select>
+    </div>
+    <div class="col-lg-4">
+      
+      <input type="text" class="form-control" id="deptName" placeholder="Sub Department's name" ng-model="subDeptName">
+    </div>
+    <div class="col-lg-2">
+     <button class="btn btn-primary" ng-click="addSubDepartment(subDeptParentDept)">Add</button>
+    </div>    
+  </div> 
+</div>
+<!-- Add Sub Department  =========== End  -->
+
+<hr>
+
+<!-- List of Departments  =========== Start  -->
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" ng-show="successDept" style="margin-top:40px">
+   <div class="panel panel-default" ng-repeat="dept in departments track by dept.DeptId">
+    <div class="panel-heading" role="tab" id="heading{{dept.DeptId}}">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" ng-href="#collapse{{dept.DeptId}}" aria-expanded="true" aria-controls="collapse{{dept.DeptId}}" target="_self" ng-click="getSubDepartments(dept.DeptId)">
+          {{dept.DeptName}}
+        </a>
+        <div class="pull-right">
+        <a role="button" ng-click="getInfoDepartment(dept.DeptId)" style="padding:5px">
+          <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+        </a>
+        <a role="button" ng-click="deleteDepartment(dept.DeptId)" style="padding:5px">
+          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </a>
+        </div>
+      </h4>
+    </div>
+    <div id="collapse{{dept.DeptId}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{dept.DeptId}}">
+      <div class="panel-body">
+         <div class="list-group" ng-show="successSubDept[''+dept.DeptId] && subdepartments[''+dept.DeptId].length > 0">
+          
+          <div class="list-group-item" ng-repeat="subdept in subdepartments[''+dept.DeptId] track by subdept.SubDeptId">
+              <a role="button" ng-click="gotoProject(dept.DeptId, subdept.SubDeptId, dept.DeptName, subdept.SubDeptName)">{{subdept.SubDeptName}}</a>
+
+              <div class="pull-right">
+              <a role="button" ng-click="getInfoSubDepartment(subdept.SubDeptId)" style="padding:5px">
+                <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+              </a>
+              <a role="button" ng-click="deleteSubDepartment(subdept.SubDeptId)" style="padding:5px">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+              </a>
+              </div>
+          </div>
+          
+        </div>
+        <div ng-show="successSubDept[''+dept.DeptId] && subdepartments[''+dept.DeptId].length == 0">
+          <p>No Sub Departments under this Department.</p>
+        </div>
+        <div ng-show="!successSubDept[''+dept.DeptId]">
+          <p>{{errorMessageSubDept[''+dept.DeptId]}}</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- List of Departments  =========== End  -->
+
+<!-- Error handling if list doesn't come of Departments  =========== Start  -->
+
+<div ng-show="!successDept" class="jumbotron" style="margin-top:40px">
+  Opps!! Some Error Occured. Message : {{errorMessageDept}}
+</div>
+<!-- Error handling if list doesn't come of Departments  =========== End  -->
+
+<!-- For Debugging  =========================================== Start  -->
+
+<div ng-show="debugOn">{{debuginfo}}</div>
+
+<!-- For Debugging  =========================================== End  -->
+
+<!-- Department info modal  =========================================== Start  -->
+
+<div class="modal fade" tabindex="-1" role="dialog" ng-repeat="dept in departments track by dept.DeptId" id="modal{{dept.DeptId}}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{dept.DeptName}}</h4>
+      </div>
+      <div class="modal-body" id="modalbody{{dept.DeptId}}">
+        
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- department info modal  =========================================== End  -->
+
+<!-- Sub Department info modal  =========================================== Start  -->
+<div ng-repeat="dept in departments">
+<div class="modal fade" tabindex="-1" role="dialog" ng-repeat="subdept in subdepartments[''+dept.DeptId] track by subdept.SubDeptId" id="modalsub{{subdept.SubDeptId}}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{subdept.SubDeptName}}</h4>
+      </div>
+      <div class="modal-body" id="modalbodysub{{subdept.SubDeptId}}">
+        
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</div>
+
+<!-- sub department info modal  =========================================== End  -->
+
+<!-- <button ng-click="debuginfo='something changed'">abc</button> -->
+
+
+

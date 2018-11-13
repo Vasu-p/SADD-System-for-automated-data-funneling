@@ -1,0 +1,947 @@
+// ------------------------------------------------
+// == the response formats for the Differen APIs ==
+// ------------------------------------------------
+/*
+
+Request Body:
+None
+
+Response Body:
+
+{
+	"results":
+	[
+
+	],
+	"message" : "",
+	"code" : ""
+
+}
+
+*/
+
+// ------------------------------------------------
+// == Departments Resource                       ==
+// ------------------------------------------------
+
+GET /departments
+
+Request Body : 
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"DeptId" : 1,
+			"DeptName" : "Water"		
+		},
+		{
+			"DeptId" : 2,
+			"DeptName" : "Weather"
+		}
+
+	],
+	"message" : "success",
+	"code" : "200"
+	
+}
+// ----------------------------------------------
+GET /departments/:departmentId
+
+Request Body : 
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"DeptId" : 10,
+			"DeptName" : "Water",
+			"CreatedBy" : "testUser",
+			"CreatedDateTime" : "2012-04-23T18:25:43.511Z",
+			"ModifiedBy" : "abc",
+			"ModifiedDateTime" : "2012-04-23T18:25:43.511Z"
+		}
+
+	],
+	"message" : "success",
+	"code" : "200"
+	
+}
+
+// ----------------------------------------------
+
+POST /departments
+Header Requirements:
+Aurthrization : token (with username in the data field)
+
+Request Body : 
+
+{
+	"DeptName" : "Road"
+}
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"DeptId" : 10,
+			"DeptName" : "Road",
+			"CreatedBy" : "testUser",
+			"CreatedDateTime" : "2012-04-23T18:25:43.511Z",
+			"ModifiedBy" : "testUser",
+			"ModifiedDateTime" : "2012-04-23T18:25:43.511Z"
+		}
+	],
+	"message" : "success",
+	"code" : "201"
+
+}
+
+// ----------------------------------------------
+
+DELETE /departments/:departmentId
+
+Request Body : 
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		
+	],
+	"message" : "success",
+	"code" : "200"
+
+}
+
+// ----------------------------------------------
+
+PUT /departments/:departmentId
+
+Request Body:
+
+{
+	"DeptName" : "Roadways"
+}
+
+Response Body:
+
+{
+	"results":
+	[
+		
+	],
+	"message" : "success",
+	"code" : "200"
+
+}
+
+// ----------------------------------------------
+
+GET /departments/:departmentId/projects 
+
+Request Body:
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"ProjectId" : 10,
+			"ProjectName" : "abc"
+		},
+		{
+			"ProjectId" : 11,
+			"ProjectName" : "xyz"
+		},
+		{
+			"ProjectId" : 12,
+			"ProjectName" : "def"
+		}
+	],
+	"message" : "success",
+	"code" : "200"
+
+}
+
+// ----------------------------------------------
+
+GET /departments/:departmentId/subdepartments
+
+Request Body:
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"SubDeptId" : 10,
+			"SubDeptName" : "Water Distribution"
+		},
+		{
+			"SubDeptId" : 11,
+			"SubDeptName" : "Water Purification"
+		},
+		{
+			"SubDeptId" : 12,
+			"SubDeptName" : "Water Pipe"
+		}
+	],
+	"message" : "success",
+	"code" : "200"
+
+}
+
+// ----------------------------------------------
+
+// ------------------------------------------------
+// ========== SubDepartments Resource =============
+// ------------------------------------------------
+
+GET /subdepartments
+
+Request Body : 
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"SubDeptId" : 1,
+			"SubDeptName" : "Water",
+		},
+		{
+			"SubDeptId" : 2,
+			"SubDeptName" : "Weather",
+		}
+
+	],
+	"message" : "success",
+	"code" : "200"
+	
+}
+// ----------------------------------------------
+GET /subdepartments/:subDepartmentId
+
+Request Body : 
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"SubDeptId" : "10",
+			"SubDeptName" : "Water Distribution",
+			"DeptId" : "2",
+			"CreatedBy" : "testUser",
+			"CreatedDateTime" : "2012-04-23T18:25:43.511Z",
+			"ModifiedBy" : "abc",
+			"ModifiedDateTime" : "2012-04-23T18:25:43.511Z"
+		}
+
+	],
+	"message" : "success",
+	"code" : "200"
+	
+}
+
+// ----------------------------------------------
+
+POST /subdepartments
+Header Requirements:
+Aurthrization : token (with username in the data field)
+
+Request Body : 
+
+{
+	"SubDeptName" : "Road Cleaning"
+}
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"SubDeptId" : 10,
+			"SubDeptName" : "Road Cleaning",
+			"CreatedBy" : "testUser",
+			"CreatedDateTime" : "2012-04-23T18:25:43.511Z",
+			"ModifiedBy" : "testUser",
+			"ModifiedDateTime" : "2012-04-23T18:25:43.511Z"
+		}
+	],
+	"message" : "success",
+	"code" : "201"
+
+}
+
+// ----------------------------------------------
+
+DELETE /subdepartments/:subDepartmentId
+
+Request Body : 
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		
+	],
+	"message" : "success",
+	"code" : "200"
+
+}
+
+// ----------------------------------------------
+
+PUT /subdepartments/:subDepartmentId
+
+Request Body:
+
+{
+	"SubDeptName" : "Road Clean"
+}
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"SubDeptId" : 10,
+			"SubDeptName" : "Road Clean",
+			"CreatedBy" : "testUser",
+			"CreatedDateTime" : "2012-04-23T18:25:43.511Z",
+			"ModifiedBy" : "anotheruser",
+			"ModifiedDateTime" : "xyz"
+		}
+	],
+	"message" : "success",
+	"code" : "200"
+
+}
+
+// ----------------------------------------------
+
+GET /subdepartments/:subDepartmentId/projects 
+
+Request Body:
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"ProjectId" : 10,
+			"ProjectName" : "abc"
+		},
+		{
+			"ProjectId" : 11,
+			"ProjectName" : "xyz"
+		},
+		{
+			"ProjectId" : 12,
+			"ProjectName" : "def"
+		}
+	],
+	"message" : "success",
+	"code" : "200"
+
+}
+
+// ----------------------------------------------
+
+// ------------------------------------------------
+// ================ Projects Resource =============
+// ------------------------------------------------
+
+GET /projects
+
+Request Body : 
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"ProjectId" : 1,
+			"ProjectName" : "Road Project at Adajan",
+		},
+		{
+			"ProjectId" : 2,
+			"ProjectName" : "Parking Lot Project at Adajan",
+		}
+
+	],
+	"message" : "success",
+	"code" : "200"
+	
+}
+// ----------------------------------------------
+GET /projects/:projectId
+
+Request Body : 
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"ProjectId" : 10,
+			"ProjectName" : "Road Project at Adajan",
+			"SubDeptId" : "1",
+			"DeptId" : "1",
+			"CreatedBy" : "testUser",
+			"CreatedDateTime" : "2012-04-23T18:25:43.511Z",
+			"ModifiedBy" : "abc",
+			"ModifiedDateTime" : "2012-04-23T18:25:43.511Z"
+		}
+
+	],
+	"message" : "success",
+	"code" : "200"
+	
+}
+
+// ----------------------------------------------
+
+POST /projects
+Header Requirements:
+Aurthrization : token (with username in the data field)
+
+Request Body : 
+
+{
+	"ProjectName" : "Road Project at Adajan",
+	"DeptId" : "1",
+	"SubDeptId" : "2"
+}
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"ProjectId" : 10,
+			"ProjectName" : "Road Project at Adajan",
+			"DeptId" : "1",
+			"SubDeptId" : "2",
+			"CreatedBy" : "testUser",
+			"CreatedDateTime" : "2012-04-23T18:25:43.511Z",
+			"ModifiedBy" : "testUser",
+			"ModifiedDateTime" : "2012-04-23T18:25:43.511Z"
+		}
+	],
+	"message" : "success",
+	"code" : "201"
+
+}
+
+// ----------------------------------------------
+
+DELETE /projects/:projectId
+
+Request Body : 
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		
+	],
+	"message" : "success",
+	"code" : "200"
+
+}
+
+// ----------------------------------------------
+
+PUT /projects/:projectId
+
+Request Body:
+
+{
+	"ProjectName" : "Road Clean Project at Adajan"
+}
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"ProjectId" : 10,
+			"ProjectName" : "Road Clean Project at Adajan",
+			"DeptId" : "1",
+			"SubDeptId" : "2",
+			"CreatedBy" : "testUser",
+			"CreatedDateTime" : "2012-04-23T18:25:43.511Z",
+			"ModifiedBy" : "anotheruser",
+			"ModifiedDateTime" : "xyz"
+		}
+	],
+	"message" : "success",
+	"code" : "200"
+
+}
+
+// ----------------------------------------------
+
+GET /projects/:projectId/apiRequests 
+
+Request Body:
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"RequestId" : 10,
+			"URL" : "http://api.adajan.suratgov.in/weatherdata",
+			"Frequency" : "Hourly",
+			"RequestType" : "PULL"
+		},
+		{
+			"RequestId" : 11,
+			"URL" : "http://api.adajan.suratgov.in/roaddata",
+			"Frequency" : "Daily",
+			"RequestType" : "PUSH"
+		},
+		{
+			"RequestId" : 12,
+			"URL" : "http://api.adajan.suratgov.in/wastedata",
+			"Frequency" : "Monthly",
+			"RequestType" : "PULL"
+		}
+	],
+	"message" : "success",
+	"code" : "200"
+
+}
+
+// ----------------------------------------------
+
+
+// ------------------------------------------------
+// ============== APIRequest Resource =============
+// ------------------------------------------------
+
+
+
+GET /apiRequests
+
+Request Body : 
+None
+
+Response Body:
+
+{
+	"results":
+	[	
+		{
+			"RequestId" : 10,
+			"URL" : "http://api.adajan.suratgov.in/wastedata",
+			"Frequency" : "Monthly",
+			"RequestType" : "PULL"
+		},
+		{
+			"RequestId" : 11,
+			"URL" : "http://api.adajan.suratgov.in/roaddata",
+			"Frequency" : "Daily",
+			"RequestType" : "PUSH"
+		}
+
+	],
+	"message" : "success",
+	"code" : "200"
+	
+}
+// ----------------------------------------------
+GET /apiRequests/:apiRequestId
+
+Request Body : 
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"RequestId" : 10,
+			"URL" : "http://api.adajan.suratgov.in/roaddata",
+			"Frequency" : "Daily",
+			"RequestType" : "PULL",
+			"SampleResult" : "
+				{
+					'a' : 'b',
+					'c' : 'd',
+					'e' : 'f'
+				}
+			",
+			"RequestArguments" : {
+				"key1" : "value1",
+				"key2" : "value2"
+				},
+			"Description" : "sampleDesc",
+			"ResultType" : "json",
+			"StartFrom" : "2012-04-23T18:25:43.511Z",
+			"Upto" : "2016-04-23T18:25:43.511Z",
+
+			"CreatedBy" : "testUser",
+			"CreatedDateTime" : "2012-04-23T18:25:43.511Z",
+			"ModifiedBy" : "abc",
+			"ModifiedDateTime" : "2012-04-23T18:25:43.511Z"
+		}
+
+	],
+	"message" : "success",
+	"code" : "200"
+	
+}
+
+// ----------------------------------------------
+
+POST /apiRequests
+Header Requirements:
+Aurthrization : token (with username in the data field)
+
+Request Body : 
+
+{
+	"URL" : "http://api.adajan.suratgov.in/roaddata",
+	"ProjectId" : "1",
+	"SubFrequencyId" : "1",
+	"RequestType" : "PULL",	
+	"RequestArguments" : {
+		"key1" : "value1",
+		"key2" : "value2"
+		},
+	"Description" : "sampleDesc",
+	"ResultType" : "json",''
+	"StartFrom" : "2012-04-23T18:25:43.511Z",
+	"Upto" : "2016-04-23T18:25:43.511Z"
+}
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"RequestId" : 10,
+			"URL" : "http://api.adajan.suratgov.in/roaddata",
+			"Frequency" : "Daily",
+			"RequestType" : "PULL",
+			"SampleResult" : "
+				{
+					'a' : 'b',
+					'c' : 'd',
+					'e' : 'f'
+				}
+			",
+			"RequestArguments" : {
+				"key1" : "value1",
+				"key2" : "value2"
+				},
+			"Description" : "sampleDesc",
+			"ResultType" : "json",
+			"StartFrom" : "2012-04-23T18:25:43.511Z",
+			"Upto" : "2016-04-23T18:25:43.511Z",
+
+			"CreatedBy" : "testUser",
+			"CreatedDateTime" : "2012-04-23T18:25:43.511Z",
+			"ModifiedBy" : "abc",
+			"ModifiedDateTime" : "2012-04-23T18:25:43.511Z"
+		}
+	],
+	"message" : "success",
+	"code" : "201"
+
+}
+
+// ----------------------------------------------
+
+DELETE /apiRequests/:apiRequestId
+
+Request Body : 
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		
+	],
+	"message" : "success",
+	"code" : "200"
+
+}
+
+// ----------------------------------------------
+
+PUT /apiRequests/:apiRequestId
+
+Conditions: Only below metions fields are editable :-
+	Frequency
+	Description
+	ResultType
+	StartFrom
+	Upto
+
+The fields other than these if edited would change the whole context and new response
+has to be fetched for doing that. So its better to just delete the old request and create a new one.
+
+Request Body:
+
+{
+	
+	"Frequency" : "Monthly",
+	"Description" : "sampleDesc",
+	"StartFrom" : "2012-04-23T18:25:43.511Z",
+	"Upto" : "2016-04-23T18:25:43.511Z"
+}
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"RequestId" : 10,
+			"URL" : "http://api.adajan.suratgov.in/roaddatanewurl",
+			"Frequency" : "Monthly",
+			"RequestType" : "PULL",
+			"SampleResult" : "
+				{
+					'a' : 'b',
+					'c' : 'd',
+					'e' : 'f'
+				}
+			",
+			"RequestArguments" : {
+				"key1" : "value1",
+				"key2" : "value2"
+				},
+			"Description" : "sampleDesc",
+			"ResultType" : "json",
+			"StartFrom" : "2012-04-23T18:25:43.511Z",
+			"Upto" : "2016-04-23T18:25:43.511Z",
+
+			"CreatedBy" : "testUser",
+			"CreatedDateTime" : "2012-04-23T18:25:43.511Z",
+			"ModifiedBy" : "abc",
+			"ModifiedDateTime" : "2012-04-23T18:25:43.511Z"
+		}
+	],
+	"message" : "success",
+	"code" : "200"
+
+}
+
+// ----------------------------------------------
+
+GET /apiRequests/:apiRequestId/attributes 
+
+Note : 
+	Display order starts from 0 denoting the outermost object.
+
+
+Request Body:
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"AttributeId" : 10,
+			"AttributeName" : "latitude",
+			"Description" : "sampleDesc" 
+		},
+		{
+			"AttributeId" : 11,
+			"AttributeName" : "longitude",
+			"Description" : "sampleDesc" 
+		},
+		{
+			"AttributeId" : 12,
+			"AttributeName" : "create_date",
+			"Description" : "sampleDesc" 
+		}
+		
+	],
+	"message" : "success",
+	"code" : "200"
+
+}
+
+// ----------------------------------------------
+
+GET /apiRequests/:apiRequestId/mappings 
+
+Request Body:
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"MappingId" : 1,
+			"AttributeId" : 10,
+			"AttributeName" : "longitude"
+		},
+		{
+			"MappingId" : 2,
+			"AttributeId" : 11,
+			"AttributeName" : "latitude"
+		},
+		{
+			"MappingId" : 3,
+			"AttributeId" : 12,
+			"AttributeName" : "create_date"
+		}
+	],
+	"message" : "success",
+	"code" : "200"
+
+}
+
+// ----------------------------------------------
+
+// ------------------------------------------------
+// ============== Attributes Resource =============
+// ------------------------------------------------
+
+GET /attributes/:attributeId
+
+Request Body : 
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"AttributeId" : 11,
+			"ancestor_tree" : 
+			{
+				"type" : "object",
+				"name" : "root",
+				"child" : 
+				{
+					"type" : "array",
+					"name" : "nodes",
+					"child" : 
+					{
+						"type" : "object",
+						"name" : "position",
+						"child" : 
+						{
+							"type" : "simple",
+							"name" : "longitude",
+							"child" : {}
+						}
+					}
+				}
+			},
+			"AttributeName" : "longitude",
+			"DepthLevel" : "3",
+			"DisplayOrder" : "1",
+			"Description" : "sampleDesc",
+			"DataType" : "string",
+
+			"CreatedBy" : "testUser",
+			"CreatedDateTime" : "2012-04-23T18:25:43.511Z",
+			"ModifiedBy" : "abc",
+			"ModifiedDateTime" : "2012-04-23T18:25:43.511Z"
+		}
+
+	],
+	"message" : "success",
+	"code" : "200"
+	
+}
+
+// ----------------------------------------------
+
+// ------------------------------------------------
+// ================= Mapping Resource =============
+// ------------------------------------------------
+
+GET /mappings/:mappingId
+
+Request Body : 
+None
+
+Response Body:
+
+{
+	"results":
+	[
+		{
+			"MappingId" : 3,
+			"AttributeId" : 12,
+			"AttributeName" : "longitude",
+			"ExecServerName" : "main_server",
+			"ExecDbName" : "waterDb",
+			"ExecUserName" : "testUser",
+			"ExecObjName" : "testObj",
+			"ColumnName" : "col3",
+
+			"CreatedBy" : "testUser",
+			"CreatedDateTime" : "2012-04-23T18:25:43.511Z",
+			"ModifiedBy" : "abc",
+			"ModifiedDateTime" : "2012-04-23T18:25:43.511Z"
+		}
+
+	],
+	"message" : "success",
+	"code" : "200"
+	
+}
+
+
+
+
+
+
+
+

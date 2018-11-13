@@ -1,0 +1,95 @@
+<style>
+  .ajax-loader {
+  visibility: hidden;
+  background-color: rgba(255,255,255,0.7);
+  position: absolute;
+  z-index: +100;
+  top: 0;bottom: 0;left: 0;right: 0;
+}
+
+.ajax-loader img {
+  position: relative;
+  top:50%;
+  left:50%;
+}
+</style>
+
+<div class="ajax-loader">
+  <img src="bower_components/hourglass.gif" class="img-responsive" />
+</div>
+
+<div class="page-header">
+  <h2>Projects of {{SubDeptName}} Sub Department</h2>
+</div>
+
+<!-- Add Project  =========== Start  -->
+
+<div class="row"> 
+  <div class="form-group">
+    <div class="col-lg-8">
+      <input type="text" class="form-control" id="projectName" placeholder="Project Name" ng-model="projectName">
+    </div>
+    <div class="col-lg-2">
+     <button class="btn btn-primary" ng-click="addProject()">Add</button>
+    </div>    
+  </div> 
+</div>
+
+<!-- Add Project  =========== End  -->
+
+<hr>
+
+<!-- List of Projects  =========== Start  -->
+
+<div class="list-group" ng-show="successProj && projects.length > 0" style="margin-top:40px"> 
+  
+  <div class="list-group-item" ng-repeat="project in projects track by project.ProjectId">
+  	  <a role="button" ng-click="gotoAPIRequest(project.ProjectId, project.ProjectName)">{{project.ProjectName}}</a>
+
+	  <div class="pull-right">
+	  <a role="button" ng-click="getInfoProject(project.ProjectId)" style="padding:5px">
+	    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+	  </a>
+	  <a role="button" ng-click="deleteProject(project.ProjectId)" style="padding:5px">
+	    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+	  </a>
+	  </div>
+
+  </div>
+  
+</div>
+
+<div ng-show="successProj && projects.length == 0" class="jumbotron" style="margin-top:40px">
+  No Projects under this Sub Department! 
+</div>
+
+<div ng-show="!successProj" class="jumbotron" style="margin-top:40px">
+  Opps!! Some Error Occured. Message : {{errorMessage}}
+</div>
+
+<!-- List of Projects  =========== End  -->
+
+
+
+<!-- Project info modal  =========================================== Start  -->
+
+<div class="modal fade" tabindex="-1" role="dialog" ng-repeat="project in projects track by project.ProjectId" id="modal{{project.ProjectId}}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{project.ProjectName}}</h4>
+      </div>
+      <div class="modal-body" id="modalbody{{project.ProjectId}}">
+        
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Project info modal  =========================================== End  -->
